@@ -1,0 +1,20 @@
+image: Visual Studio 2017
+
+platform:
+  - x64
+ 
+configuration:
+  - Release
+
+install:
+    - git submodule update --init --recursive
+
+before_build:
+    - cmake -G "Visual Studio 15 2017 Win64" .
+
+build:
+  project: $(APPVEYOR_BUILD_FOLDER)\tests.sln
+
+test_script:
+  - mkdir outputs
+  - '%APPVEYOR_BUILD_FOLDER%\%CONFIGURATION%\tests.exe'

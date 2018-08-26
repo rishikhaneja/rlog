@@ -1,0 +1,20 @@
+language: cpp
+
+matrix:
+  include:
+    - os: osx
+      compiler: clang
+    
+before_install:
+  - pip install cpp-coveralls
+
+script:
+     - mkdir -p build
+     - cd build
+     - cmake -DCOVERAGE=1 ../
+     - make
+     - mkdir -p outputs
+     - ./tests
+
+after_success:
+  - coveralls --source=rlog.hpp
