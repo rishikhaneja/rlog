@@ -2,9 +2,7 @@
 
 * osx clang build [![Build Status](https://travis-ci.org/rishikhaneja/rlog.svg?branch=master)](https://travis-ci.org/rishikhaneja/rlog)
 
-
-* windows msvc build [![Build status](https://ci.appveyor.com/api/projects/status/snk32n500mbiknw5/branch/master?svg=true)](https://ci.appveyor.com/project/rishikhaneja/rlog)
-
+* windows msvc 2017 build [![Build status](https://ci.appveyor.com/api/projects/status/snk32n500mbiknw5/branch/master?svg=true)](https://ci.appveyor.com/project/rishikhaneja/rlog)
 
 ## Overview
 
