@@ -51,11 +51,12 @@ R::Level::Warning
 R::Level::Error
 ```
 
-### Initialisation
+### Initialisation and global level
 
-* Reset call sets global severity level to specified value and clears any previous global state
+* Reset call sets `global severity level` to specified value and clears any previous global state
 * Can be used for both init and deinit
 * Best called atleast once from a single-threaded init context
+* ALl logs below global level get filtered away
 
 ```c++
 R::reset(); // defaults to Info
