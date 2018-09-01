@@ -264,7 +264,7 @@ R::addSink(std::ref(json));
 ## Limitations / Weaknesses
 
 * Although std::function helps keeping syntax clean, it "might" cost performance because of dynamic memory usage and multiple copy constructions
-* The later can also lead to really ugly mis-behaviour when attached to a functor class with constructor/destructor behaviour. To avoid this make such functors non-copyable, and pass around as reference, instead of values, using std::ref
+* The latter can also lead to really ugly mis-behaviour when attached to a functor class with constructor/destructor behaviour. To avoid this, make such functors non-copyable, and assign to std::function as reference, using std::ref
 * Sinks and global level are stored on internal globals
 
 ## Further development
