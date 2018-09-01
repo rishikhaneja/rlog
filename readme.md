@@ -16,19 +16,19 @@
 
 ## Design
 
-### Modularity and composability
+### Composability
 
 * Consists of many functions and types that can be composed together in new ways, allowing for
     * re-use
     * powerful combined effects
     * unlimited extensibility
 
-### Readability and brevity
+### Brevity
 
 * Extra effort has been put into making the interface concise and readable
 * Low code footprint means your code is king
 
-### Compile-time and Run-time filtering
+### Run-time (and compile-time) filtering
 
 * Runtime log severity level switch-ability support means no need to recompile everything
 * Even if a log is filtered at runtime, all costs except the comparision are removed!
