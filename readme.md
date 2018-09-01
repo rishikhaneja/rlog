@@ -6,16 +6,32 @@
 
 ## Overview
 
-* A header-only, zero-external-dependency logger
-* Highly customisable
-* Modular and composable
-* Readable and concise interface
-* Thread-safe
+* A beautiful header-only, zero-external-dependency, modern C++ logger
+* Thread-safe by default
 * Easy to switch from existing "cout logging"
-* Severity levels
-* Timestamp support
-* Built in Smart Formatter
-* Built in Json writter
+* Severity levels support
+* Timestamp, filename, line number support
+* Built-in Smart Formatter
+* Built-in Json writter
+
+## Design
+
+### Modularity and composability
+
+* Consists of many functions and types that can be composed together in new ways, allowing for
+    * re-use
+    * powerful combined effects
+    * unlimited extensibility
+
+### Readability and brevity
+
+* Extra effort has been put into making the interface concise and readable
+* Low code footprint means your code is king
+
+### Compile-time and Run-time filtering
+
+* Runtime log severity level switch-ability support means no need to recompile everything
+* Even if a log is filtered at runtime, all costs except the comparision are removed!
 
 ## Integration
 
@@ -23,11 +39,7 @@
 * And include `rlog.hpp` into your source
 * You are good to go!
 
-## Building tests
-
-* `build_and_test.sh`
-
-## Design & Usage
+## Usage
 
 ### Levels
 
@@ -41,7 +53,7 @@ R::Level::Error
 
 ### Initialisation
 
-* Reset sets global level to specified value and clears any previous global state
+* Reset call sets global severity level to specified value and clears any previous global state
 * Can be used for both init and deinit
 * Best called atleast once from a single-threaded init context
 
@@ -200,13 +212,6 @@ auto barFormatter = R_FORMATTER_W_CAPTURE(metadata, message, x) { return to_uppe
 R::addSink(makeFormattedSink(fooSink, fooFormatter));
 ```
 
-### Composition
-
-* All these objects can be composed together in new ways, allowing for
-    * powerful combined effects
-    * re-use
-    * unlimited extensibility
-
 ### Smart Formatter
 
 * In-built intelligent formatter
@@ -255,11 +260,6 @@ R::addSink(std::ref(json));
 * `R_ACTIVE` : Allows completely disabling all logging, when set to false
 * `R_MIN_LEVEL`: Allows setting filtering all logs globally, such that any log below specified level shall be completely disabled
 
-## Other Strengths
-
-* Runtime level switch-ability support means no need of recompilation
-* When a log is filtered even at runtime, all costs except the comparision are removed!
-
 ## Limitations / Weaknesses
 
 * Sinks and level are stored on globals
@@ -272,3 +272,7 @@ R::addSink(std::ref(json));
 * More in-built output options
 * More tests
 * Test coverage setup
+
+## Building tests
+
+* `build_and_test.sh`
