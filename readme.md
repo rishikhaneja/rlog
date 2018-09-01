@@ -269,7 +269,8 @@ R::addSink(std::ref(json));
 
 ## Further development
 
-* level effects like debug break and assertion
-* more in-built output options
-* more tests
-* test coverage setup
+* Level-based effects like warnings cause debug-break and errors cause assertion
+* Conditional logging support
+* More in-built output options
+* More tests
+* Test coverage setup
