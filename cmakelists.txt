@@ -64,5 +64,7 @@ else()
     target_link_libraries(${EXECUTABLE_NAME} gmock_main)
 endif()
 
+make_directory(${CMAKE_BINARY_DIR}/outputs)
+
 # ---------------------------------------------------------------------
 # EOF

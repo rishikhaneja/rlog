@@ -13,7 +13,6 @@ script:
      - cd build
      - cmake -DCOVERAGE=1 ../
      - make
-     - mkdir -p outputs
      - ./tests
 
 after_success:
