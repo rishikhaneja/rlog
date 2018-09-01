@@ -6,7 +6,7 @@
 
 ## Overview
 
-* A beautiful header-only, zero-external-dependency, modern C++ logger
+* A beautiful, header-only, zero-external-dependency, lightweight, modern C++ logger
 * Thread-safe by default
 * Easy to switch from existing "cout logging"
 * Severity levels support
@@ -263,14 +263,18 @@ R::addSink(std::ref(json));
 
 ## Limitations / Weaknesses
 
-* Sinks and level are stored on globals
-* Dynamic memory used by std::function
+* Although std::function helps keeping syntax clean, it "might" cost performance because of dynamic memory usage and multiple copy constructions
+* The later can also lead to really ugly mis-behaviour when attached to a functor class with constructor/destructor behaviour. To avoid this make such functors non-copyable, and pass around as reference, instead of values, using std::ref
+* Sinks and global level are stored on internal globals
 
 ## Further development
 
 * Level-based effects like warnings cause debug-break and errors cause assertion
+* More compile time control, for example, toggling off un-necessary metadata collection
+* Per-sink customisation of thread safety
 * Conditional logging support
 * More in-built output options
+* More metadata options
 * More tests
 * Test coverage setup
 
