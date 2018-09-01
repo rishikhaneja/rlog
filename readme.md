@@ -265,6 +265,7 @@ R::addSink(std::ref(json));
 
 * Although std::function helps keeping syntax clean, it "might" cost performance because of dynamic memory usage and multiple copy constructions
 * The latter can also lead to really ugly mis-behaviour when attached to a functor class with constructor/destructor behaviour. To avoid this, make such functors non-copyable, and assign to std::function as reference, using std::ref
+* Current implementation does not allow any control of thread safety, and infact might be over-locking, leading to significant performance cost
 * Sinks and global level are stored on internal globals
 
 ## Further development
