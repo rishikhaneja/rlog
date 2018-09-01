@@ -275,4 +275,6 @@ R::addSink(std::ref(json));
 
 ## Building tests
 
-* `build_and_test.sh`
+* Run `build_and_test.sh`
+* Uses cmake
+* Which also downloads and builds googletest, and requires internet connection
