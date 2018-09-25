@@ -3,7 +3,7 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-#include <mutex>
+#include <atomic>
 #include <string>
 #include <thread>
 
@@ -25,10 +25,8 @@ void number_guesser() {
 
     const auto secret = rand() % 10 + 1;
 
-    volatile auto stop = false;
-
-    std::mutex mut;
-    volatile auto finished = false;
+    atomic<bool> stop(false);
+    atomic<bool> finished(false);
 
     auto Solver = [&](const string& name) {
         return [&, name] {
@@ -48,7 +46,6 @@ void number_guesser() {
 
                 if (guess == secret) {
                     R_WARNING(name) << "Solver " << name << " won";
-                    lock_guard<mutex> lock(mut);
                     finished = true;
                     break;
                 }
@@ -57,8 +54,8 @@ void number_guesser() {
         };
     };
 
-    std::thread foo(Solver("Foo"));
-    std::thread bar(Solver("Bar"));
+    thread foo(Solver("Foo"));
+    thread bar(Solver("Bar"));
 
     do {
         if (finished) {
@@ -75,15 +72,14 @@ void number_guesser() {
 
 const auto run_sample = [](R::Level level) {
     ofstream fs;
-    fs.open(std::string("outputs/sampleusage_") + R::to_string(level) +
-            ".json");
+    fs.open(string("outputs/sampleusage_") + R::to_string(level) + ".json");
 
     R::reset(level);
 
     R::addSink(R::makeSmartFormattedCoutSink());
 
     R::JsonSink json(fs);
-    R::addSink(std::ref(json));
+    R::addSink(ref(json));
 
     number_guesser();
 

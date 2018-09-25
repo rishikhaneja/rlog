@@ -8,8 +8,8 @@
 
 // -----------------------------------------------------------
 
-#ifndef __R_LOG_HPP__
-#define __R_LOG_HPP__
+#ifndef R_LOG_HPP
+#define R_LOG_HPP
 
 // -----------------------------------------------------------
 /// own headers
@@ -34,11 +34,11 @@
 /// private macros
 /// all macros starting with _ are for internal use only
 
-#define _R_DISALLOW_COPY_ASSIGN(_name) \
-    _name(const _name&) = delete;      \
+#define R_INTERNAL_DISALLOW_COPY_ASSIGN(_name) \
+    _name(const _name&) = delete;              \
     _name& operator=(const _name&) = delete;
 
-#define _R_LOG(_level, _tag)                                              \
+#define R_INTERNAL_LOG(_level, _tag)                                      \
     if (R_MIN_LEVEL > R::Level::_level) {                                 \
     } else if (R::Level::_level < R::internal::Store::instance().level) { \
     } else                                                                \
@@ -52,21 +52,21 @@
  * @param tag: const std::string&
  * @usage R_INFO("foo") << "bar";
  */
-#define R_INFO(_tag) _R_LOG(Info, _tag)
+#define R_INFO(_tag) R_INTERNAL_LOG(Info, _tag)
 
 /**
  * @brief Makes a log with level Warning
  * @param tag: const std::string&
  * @usage R_WARNING("foo") << "bar";
  */
-#define R_WARNING(_tag) _R_LOG(Warning, _tag)
+#define R_WARNING(_tag) R_INTERNAL_LOG(Warning, _tag)
 
 /**
  * @brief Makes a log with level Error
  * @param tag: const std::string&
  * @usage R_ERROR("foo") << "bar";
  */
-#define R_ERROR(_tag) _R_LOG(Error, _tag)
+#define R_ERROR(_tag) R_INTERNAL_LOG(Error, _tag)
 
 /**
  * @brief Defines a sink without captures
@@ -206,12 +206,19 @@ struct Metadata {
           timestamp([] {
               // capture current time
               auto now = std::chrono::system_clock::now();
-              auto in_time_t = std::chrono::system_clock::to_time_t(now);
+              auto time_tt = std::chrono::system_clock::to_time_t(now);
+              std::tm tm;
+#ifdef _WIN32
+              localtime_s(&tm, &time_tt);
+#else
+              localtime_r(&time_tt, &tm);
+#endif
               std::ostringstream os;
-              os << std::put_time(std::localtime(&in_time_t), "%H-%M-%S");
+              os << std::put_time(&tm, "%H-%M-%S");
               return os.str();
           }()),
-          tag(tag) {}
+          tag(tag) {
+    }
     Level level = Level::Info;
     std::string filename;
     long line;
@@ -316,9 +323,7 @@ struct Log {
         const std::string& filename,
         long line,
         const std::string& tag = "")
-        : metadata(level, filename, line, tag) {
-        metadata.level = level;
-    }
+        : metadata(level, filename, line, tag) {}
     std::ostringstream& stream() { return os; }
     ~Log() {
         // prevent concurrent use
@@ -531,7 +536,7 @@ struct JsonSink {
     bool first = true;
     JsonSink(std::ofstream& fs) : fs(fs) { fs << "["; }
     ~JsonSink() { fs << "\n]"; }
-    _R_DISALLOW_COPY_ASSIGN(JsonSink);
+    R_INTERNAL_DISALLOW_COPY_ASSIGN(JsonSink);
     R_SINK_OPERATOR(metadata, message) {
         if (first) {
             first = false;
@@ -548,7 +553,7 @@ struct JsonSink {
 
 // -----------------------------------------------------------
 
-#endif  // __R_LOG_HPP__
+#endif  // R_LOG_HPP
 
 // -----------------------------------------------------------
 // EOF
